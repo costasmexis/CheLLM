@@ -12,7 +12,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_huggingface import HuggingFaceEmbeddings
 
 # HF pipeline wrappers
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 # Optional: Suppress TensorFlow warnings (e.g., cuDNN, AVX, oneDNN logs)
 import warnings
@@ -45,7 +45,7 @@ def build_llm(model_name: str) -> HuggingFacePipeline:
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         device_map="auto",      # GPU if available, else CPU
-        quantization_config=BitsAndBytesConfig(load_in_4bit=True)  # Use BitsAndBytesConfig for quantization
+        torch_dtype="auto",     # float16 if GPU, else float32
     )
 
     text_gen = pipeline(
@@ -97,8 +97,6 @@ def ask(query: str, top_k: int = 3) -> None:
 if __name__ == "__main__":
     cli = argparse.ArgumentParser(description="Local Q&A over Chroma.")
     cli.add_argument("query", help="The question to ask.")
-    # cli.add_argument("--top-k", type=int, default=3, help="Chunks to retrieve")
-    # cli.add_argument("--model", default=HF_MODEL_NAME, help="HF chat model name")
     args = cli.parse_args()
 
     ask(args.query)

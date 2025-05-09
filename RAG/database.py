@@ -21,15 +21,15 @@ def generate_data_store():
 
 
 def load_documents():
-    loader = DirectoryLoader(DATA_PATH, glob="*.md")
+    loader = DirectoryLoader(DATA_PATH, glob="*.txt", show_progress=True)
     documents = loader.load()
     return documents
 
 
 def split_text(documents: list[Document]):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=500,
+        chunk_size=200,
+        chunk_overlap=100,
         length_function=len,
         add_start_index=True,
     )
