@@ -176,4 +176,4 @@ cython_debug/
 # Models and data folders
 models/
 data/
-CheLLM/RAG/chroma
+CheLLM/RAG/chromaHIV.csv
